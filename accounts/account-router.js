@@ -19,5 +19,25 @@ router.get('/', (req, res) => {
     })
 });
 
+router.get('/:id', (req, res) => {
+    const { id } = req.params
+    db('accounts').where('id', id)
+    .then(acct => {
+        if (acct) {
+            res.status(200).json(acct)
+        } else {
+            res.status(404).json({
+                message: 'invalid ID'
+            })
+        }     
+    })
+    .catch(err => {
+        res.status(500).json({
+            err: err,
+            message: 'There was an error retrieving the account'
+        })
+    })
+});
+
 
 module.exports = router;
